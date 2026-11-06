@@ -116,6 +116,21 @@
   opacity: 0.7;
 }
 
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 14px;
+}
+
+.contact-links a {
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 @media (max-width: 600px) {
   .contact-container {
     width: 100%;
@@ -208,6 +223,15 @@
       <p class="contact-note">
         Alternatively, you can connect with me through LinkedIn or GitHub.
       </p>
+
+      <div class="contact-links" aria-label="Social profiles">
+        <a href="https://www.linkedin.com/in/irwanshah-lin" target="_blank" rel="noopener noreferrer">
+          LinkedIn
+        </a>
+        <a href="https://github.com/Irwan-Shah" target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
+      </div>
 
     </div>
 
