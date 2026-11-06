@@ -1,19 +1,135 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact — Irwan Shah</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="style.css">
+
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<style>
+.contact-container {
+  max-width: 680px;
+  margin: auto;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 35px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 15px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: inherit;
+  background: transparent;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #2563eb;
+}
+
+.form-group textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+
+.send-button {
+  padding: 14px 22px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.send-button:hover {
+  opacity: 0.85;
+}
+
+.send-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-status {
+  display: none;
+  padding: 13px 15px;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.form-status.success {
+  display: block;
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.form-status.error {
+  display: block;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.contact-note {
+  margin-top: 25px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+  .contact-container {
+    width: 100%;
+  }
+}
+</style>
 </head>
+
 <body>
 
 <header class="site-header">
   <div class="wrap header-inner">
     <a href="index.html" class="mark">Irwan Shah</a>
+
     <nav class="main-nav">
       <a href="index.html">Home</a>
       <a href="project.html">Project</a>
@@ -24,14 +140,166 @@
 
 <main>
   <section class="wrap" style="padding-top:88px; padding-bottom:96px;">
-    <h1 style="font-size:30px; margin-bottom:14px;">Contact</h1>
-    <p class="lede">This page is next up — email, LinkedIn, and GitHub links will live here. Placeholder for now.</p>
+
+    <div class="contact-container">
+
+      <h1 style="font-size:30px; margin-bottom:14px;">
+        Get in Touch
+      </h1>
+
+      <p class="lede">
+        Have a project in mind, an opportunity, or just want to connect?
+        Feel free to send me a message. I'd be happy to hear from you.
+      </p>
+
+      <form id="contact-form" class="contact-form">
+
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Enter your name"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@example.com"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            placeholder="What would you like to discuss?"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            placeholder="Write your message here..."
+            required
+          ></textarea>
+        </div>
+
+        <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
+
+        <button type="submit" id="send-button" class="send-button">
+          Send Message →
+        </button>
+
+      </form>
+
+      <p class="contact-note">
+        Alternatively, you can connect with me through LinkedIn or GitHub.
+      </p>
+
+    </div>
+
   </section>
 </main>
 
 <footer class="site-footer wrap">
   <p>&copy; 2026 Muhamad Irwan Shah bin Zaman.</p>
 </footer>
+
+<script>
+
+// ==========================================
+// EMAILJS CONFIGURATION
+// ==========================================
+
+const EMAILJS_PUBLIC_KEY = "99jUtPBWyV96HqWix";
+const EMAILJS_SERVICE_ID = "service_zvqhdax";
+const EMAILJS_TEMPLATE_ID = "template_j2263md";
+
+// Initialize EmailJS
+emailjs.init({
+  publicKey: EMAILJS_PUBLIC_KEY
+});
+
+// ==========================================
+// CONTACT FORM SUBMISSION
+// ==========================================
+
+const contactForm = document.getElementById("contact-form");
+const sendButton = document.getElementById("send-button");
+const formStatus = document.getElementById("form-status");
+
+contactForm.addEventListener("submit", async function(event) {
+
+  event.preventDefault();
+
+  // Prevent duplicate submissions
+  sendButton.disabled = true;
+  sendButton.textContent = "Sending...";
+
+  formStatus.className = "form-status";
+  formStatus.textContent = "";
+
+  // Collect form data
+  const templateParams = {
+    name: document.getElementById("name").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    subject: document.getElementById("subject").value.trim(),
+    message: document.getElementById("message").value.trim(),
+
+    time: new Date().toLocaleString(),
+    year: new Date().getFullYear()
+  };
+
+  try {
+
+    // Send email through EmailJS
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      templateParams
+    );
+
+    // Success notification
+    formStatus.className = "form-status success";
+    formStatus.textContent =
+      "✓ Your message has been sent successfully! Thank you for reaching out. I'll get back to you soon.";
+
+    // Clear form
+    contactForm.reset();
+
+  } catch (error) {
+
+    console.error("EmailJS Error:", error);
+
+    // Error notification
+    formStatus.className = "form-status error";
+    formStatus.textContent =
+      "✕ Something went wrong while sending your message. Please try again later.";
+
+  } finally {
+
+    // Restore button
+    sendButton.disabled = false;
+    sendButton.textContent = "Send Message →";
+
+  }
+
+});
+
+</script>
 
 </body>
 </html>
