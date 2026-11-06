@@ -251,6 +251,12 @@ a{ color: inherit; text-decoration: none; }
   outline: none;
 }
 
+.project-gallery--phone{
+  width: min(100%, 300px);
+  margin: 0 auto;
+  background: #f3f5f3;
+}
+
 .project-gallery:focus-within{
   outline: 2px solid var(--accent);
   outline-offset: 3px;
@@ -259,6 +265,11 @@ a{ color: inherit; text-decoration: none; }
 .project-slides{
   display: grid;
   aspect-ratio: 4 / 3;
+}
+
+.project-gallery--phone .project-slides{
+  aspect-ratio: 3 / 4;
+  padding: 14px;
 }
 
 .project-slide{
@@ -274,6 +285,11 @@ a{ color: inherit; text-decoration: none; }
 .project-slide.is-active{
   opacity: 1;
   pointer-events: auto;
+}
+
+.project-gallery--phone .project-slide{
+  object-fit: contain;
+  filter: drop-shadow(0 8px 12px rgba(23, 24, 26, 0.14));
 }
 
 .carousel-button{
