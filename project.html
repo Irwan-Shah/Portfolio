@@ -31,8 +31,15 @@
   <section class="wrap projects-list">
  
     <article class="project-card">
-      <div class="project-thumb">
-        <img src="assets/projects/autopilot.jpg" alt="Supervity Autopilot Hackathon project screenshot">
+      <div class="project-gallery" data-carousel aria-label="Supervity project screenshots">
+        <div class="project-slides">
+          <img class="project-slide is-active" src="assets/project/supervity/supervity1.png" alt="Supervity project screenshot 1">
+          <img class="project-slide" src="assets/project/supervity/supervity2.png" alt="Supervity project screenshot 2" loading="lazy">
+          <img class="project-slide" src="assets/project/supervity/supervity3.png" alt="Supervity project screenshot 3" loading="lazy">
+        </div>
+        <button class="carousel-button carousel-previous" type="button" aria-label="Previous Supervity screenshot">&#8592;</button>
+        <button class="carousel-button carousel-next" type="button" aria-label="Next Supervity screenshot">&#8594;</button>
+        <div class="carousel-dots" aria-label="Choose a Supervity screenshot"></div>
       </div>
       <div class="project-body">
         <p class="project-meta">Finalist · Supervity Autopilot Hackathon · Aug 2026</p>
@@ -54,8 +61,10 @@
     </article>
  
     <article class="project-card">
-      <div class="project-thumb">
-        <img src="assets/projects/nutrition-game.jpg" alt="Nutrition gamification app screenshot">
+      <div class="project-gallery" data-carousel aria-label="Nutrition project screenshots">
+        <div class="project-slides">
+          <img class="project-slide is-active" src="assets/project/nutri/Screenshot 2026-09-08 at 12.45.34 PM.png" alt="Nutrition app screenshot">
+        </div>
       </div>
       <div class="project-body">
         <p class="project-meta">Lead Developer · Final Year Project · Feb 2026</p>
@@ -76,8 +85,14 @@
     </article>
  
     <article class="project-card">
-      <div class="project-thumb">
-        <img src="assets/projects/adsurevent.jpg" alt="AdsUrEvent web application screenshot">
+      <div class="project-gallery" data-carousel aria-label="AdsUrEvent project screenshots">
+        <div class="project-slides">
+          <img class="project-slide is-active" src="assets/project/adsurevent/adsurevent1.png" alt="AdsUrEvent web application screenshot 1">
+          <img class="project-slide" src="assets/project/adsurevent/Screenshot 2026-09-08 at 12.38.39 PM.png" alt="AdsUrEvent web application screenshot 2" loading="lazy">
+        </div>
+        <button class="carousel-button carousel-previous" type="button" aria-label="Previous AdsUrEvent screenshot">&#8592;</button>
+        <button class="carousel-button carousel-next" type="button" aria-label="Next AdsUrEvent screenshot">&#8594;</button>
+        <div class="carousel-dots" aria-label="Choose an AdsUrEvent screenshot"></div>
       </div>
       <div class="project-body">
         <p class="project-meta">Backend &amp; Database Developer · Sept 2024</p>
@@ -104,6 +119,48 @@
 <footer class="site-footer wrap">
   <p>&copy; 2026 Muhamad Irwan Shah bin Zaman.</p>
 </footer>
- 
+<script>
+  document.querySelectorAll("[data-carousel]").forEach((carousel) => {
+    const slides = Array.from(carousel.querySelectorAll(".project-slide"));
+    const dots = carousel.querySelector(".carousel-dots");
+    const previous = carousel.querySelector(".carousel-previous");
+    const next = carousel.querySelector(".carousel-next");
+    let currentIndex = 0;
+
+    if (slides.length < 2) {
+      return;
+    }
+
+    slides.forEach((slide, index) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "carousel-dot";
+      dot.setAttribute("aria-label", `Show screenshot ${index + 1}`);
+      dot.addEventListener("click", () => showSlide(index));
+      dots.append(dot);
+    });
+
+    function showSlide(index) {
+      currentIndex = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("is-active", slideIndex === currentIndex);
+      });
+      dots.querySelectorAll(".carousel-dot").forEach((dot, dotIndex) => {
+        const isCurrent = dotIndex === currentIndex;
+        dot.classList.toggle("is-active", isCurrent);
+        dot.setAttribute("aria-current", isCurrent ? "true" : "false");
+      });
+    }
+
+    previous.addEventListener("click", () => showSlide(currentIndex - 1));
+    next.addEventListener("click", () => showSlide(currentIndex + 1));
+    carousel.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") showSlide(currentIndex - 1);
+      if (event.key === "ArrowRight") showSlide(currentIndex + 1);
+    });
+
+    showSlide(0);
+  });
+</script>
 </body>
 </html>
